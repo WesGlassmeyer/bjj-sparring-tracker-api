@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS log_subs_taps_sweeps_pivot;
