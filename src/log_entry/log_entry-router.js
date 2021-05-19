@@ -14,7 +14,8 @@ const serializeLogEntry = (entry) => ({
   round_length: entry.rounds,
   cardio: entry.cardio,
   notes: entry.notes,
-  submissions: entry.sub_id,
+  submissions: entry.submissions,
+
   //   id: item.id,
   //   title: xss(item.title),
   //   rating: item.rating,
@@ -28,15 +29,13 @@ logEntryRouter.route("/").get((req, res, next) => {
   logEntryService
     .getAllLogEntries(knexInstance)
     .then((entries) => {
-      let sub_id = [];
-      console.log(entries);
+      const sub_id = [];
       entries.forEach((entry) => {
-        console.log(entry);
-        // sub_details = { name: entry.name, count: entry.count };
-        // sub_id.push(sub_details);
+        sub_details = { name: entry.name, count: entry.count };
+        sub_id.push(sub_details);
+        entry.submissions = sub_id;
       });
-      //   entry.sub_id = sub_id;
-      console.log(entry.sub_id);
+      console.log(entries, "+++++++++++++");
       res.json(entries.map(serializeLogEntry));
     })
     .catch(next);
@@ -125,3 +124,5 @@ logEntryRouter.route("/").get((req, res, next) => {
 //   });
 
 module.exports = logEntryRouter;
+
+//convert subs taps and sweeps table to move table with name category and count, pivot table would reference the move and log tables,
