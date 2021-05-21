@@ -5,21 +5,11 @@ const logEntryService = {
       .from("log_entry")
       .join(
         "log_moves_pivot",
-        "log_moves_pivot.log_entry_id",
+        "log_entry.id",
         "=",
-        "log_entry.id"
+        "log_moves_pivot.log_entry_id"
       )
       .join("moves", "moves.id", "=", "log_moves_pivot.move_id");
-    //   .select("fav_items.*", "ratings.value", "tags.name")
-    //   .from("fav_items")
-    //   .join("ratings", "fav_items.id", "=", "ratings.fav_items_id")
-    //   .join(
-    //     "fav_items_tags_pivot",
-    //     "fav_items.id",
-    //     "=",
-    //     "fav_items_tags_pivot.fav_items_id"
-    //   )
-    //   .join("tags", "fav_items_tags_pivot.tag_id", "=", "tags.id");
   },
 
   //     insertItem(knex, newItem, newRating, newTags) {
