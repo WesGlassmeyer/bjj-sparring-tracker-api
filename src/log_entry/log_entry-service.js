@@ -12,6 +12,58 @@ const logEntryService = {
       .join("moves", "moves.id", "=", "log_moves_pivot.move_id");
   },
 
+  insertLogEntry(knex, newEntry, newMoves) {
+    let completedLogEntry;
+    return knex
+      .insert(newEntry)
+      .into("log_entry")
+      .returning("*")
+      .then((entry) => {
+        return entry[0];
+      })
+      .then((newLogEntry) => {
+        completedLogEntry = newLogEntry;
+        const movesPromises = [];
+        const categories = ["submissions", "taps", "sweeps"];
+        categories.forEach((cat) => {
+          newMoves[cat].forEach((move) => {
+            movesPromises.push(
+              knex
+                .insert({
+                  category: move.category,
+                  name: move.name,
+                  count: move.count,
+                })
+                .into("moves")
+                .returning("*")
+            );
+          });
+        });
+        return Promise.all(movesPromises);
+      })
+      .then((newMoveEntry) => {
+        const movesPromises2 = [];
+        newMoveEntry.forEach((moveEntry) => {
+          moveEntry.forEach((move) => {
+            movesPromises2.push(
+              knex
+                .insert({
+                  log_entry_id: completedLogEntry.id,
+                  move_id: move.id,
+                })
+                .into("log_moves_pivot")
+                .returning("*")
+            );
+          });
+        });
+
+        return Promise.all(movesPromises2);
+      })
+      .then(() => {
+        return completedLogEntry.id;
+      });
+  },
+
   //     insertItem(knex, newItem, newRating, newTags) {
   //       let favItem;
   //       return knex

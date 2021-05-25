@@ -19,40 +19,65 @@ const serializeLogEntry = (entry) => ({
   sweeps: entry.sweeps,
 });
 
-logEntryRouter.route("/").get((req, res, next) => {
-  const knexInstance = req.app.get("db");
-  logEntryService
-    .getAllLogEntries(knexInstance)
-    .then((entries) => {
-      const newEntries = [];
+logEntryRouter
+  .route("/")
+  .get((req, res, next) => {
+    const knexInstance = req.app.get("db");
+    logEntryService
+      .getAllLogEntries(knexInstance)
+      .then((entries) => {
+        const newEntries = [];
 
-      entries.forEach((entry) => {
-        let index = newEntries.findIndex((id) => {
-          return id.log_entry_id === entry.log_entry_id;
+        entries.forEach((entry) => {
+          let index = newEntries.findIndex((id) => {
+            return id.log_entry_id === entry.log_entry_id;
+          });
+          if (index === -1) {
+            newEntries.push({
+              ...entry,
+              submissions: [],
+              taps: [],
+              sweeps: [],
+            });
+            index = newEntries.length - 1;
+          }
+          if (entry.category === "subs") {
+            newEntries[index].submissions.push({
+              name: entry.name,
+              count: entry.count,
+            });
+          } else if (entry.category === "taps") {
+            newEntries[index].taps.push({
+              name: entry.name,
+              count: entry.count,
+            });
+          } else {
+            newEntries[index].sweeps.push({
+              name: entry.name,
+              count: entry.count,
+            });
+          }
         });
-        if (index === -1) {
-          newEntries.push({ ...entry, submissions: [], taps: [], sweeps: [] });
-          index = newEntries.length - 1;
-        }
-        if (entry.category === "subs") {
-          newEntries[index].submissions.push({
-            name: entry.name,
-            count: entry.count,
-          });
-        } else if (entry.category === "taps") {
-          newEntries[index].taps.push({ name: entry.name, count: entry.count });
-        } else {
-          newEntries[index].sweeps.push({
-            name: entry.name,
-            count: entry.count,
-          });
-        }
-      });
-      res.json(newEntries.map(serializeLogEntry));
-    })
-    .catch(next);
-});
+        res.json(newEntries.map(serializeLogEntry));
+      })
+      .catch(next);
+  })
 
+  .post(jsonParser, (req, res, next) => {
+    const { user_id, date, rounds, round_length, cardio, notes } = req.body;
+    const newEntry = { user_id, date, rounds, round_length, cardio, notes };
+    const { submissions, taps, sweeps } = req.body;
+    const newMoves = { submissions, taps, sweeps };
+    return logEntryService
+      .insertLogEntry(req.app.get("db"), newEntry, newMoves)
+      .then((entry) => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${entry.id}`))
+          .json(serializeLogEntry(entry));
+      })
+      .catch(next);
+  });
 //   .post(jsonParser, (req, res, next) => {
 //     const { title, youtube_id, thumbnail } = req.body;
 //     const newItem = { title, youtube_id, thumbnail };
@@ -102,4 +127,4 @@ logEntryRouter.route("/").get((req, res, next) => {
 
 module.exports = logEntryRouter;
 
-//
+// soft delete moves table and pivot table
