@@ -13,7 +13,7 @@ const serializeLogEntry = (entry) => ({
   rounds: entry.rounds,
   round_length: entry.rounds,
   cardio: entry.cardio,
-  notes: entry.notes,
+  notes: xss(entry.notes),
   submissions: entry.submissions,
   taps: entry.taps,
   sweeps: entry.sweeps,
@@ -68,6 +68,7 @@ logEntryRouter
     const newEntry = { user_id, date, rounds, round_length, cardio, notes };
     const { submissions, taps, sweeps } = req.body;
     const newMoves = { submissions, taps, sweeps };
+
     return logEntryService
       .insertLogEntry(req.app.get("db"), newEntry, newMoves)
       .then((entry) => {
@@ -78,53 +79,64 @@ logEntryRouter
       })
       .catch(next);
   });
-//   .post(jsonParser, (req, res, next) => {
-//     const { title, youtube_id, thumbnail } = req.body;
-//     const newItem = { title, youtube_id, thumbnail };
-//     const { rating } = req.body;
-//     const newRating = { rating };
-//     const { tags } = req.body;
-//     const newTags = tags;
 
-//     for (const [key, value] of Object.entries(newItem, newRating))
-//       if (value == null)
-//         return res.status(400).json({
-//           error: { message: `Missing '${key}' in request body` },
-//         });
-//     return FavItemsService.insertItem(
-//       req.app.get("db"),
-//       newItem,
-//       newRating,
-//       newTags
-//     )
-//       .then((item) => {
-//         res
-//           .status(201)
-//           .location(path.posix.join(req.originalUrl, `/${item.youtube_id}`))
-//           .json(serializeItem(item));
-//       })
-//       .catch(next);
-//   });
+logEntryRouter
+  .route("/:logEntryId")
+  .all((req, res, next) => {
+    logEntryService
+      .getById(req.app.get("db"), req.params.logEntryId)
+      .then((entry) => {
+        if (!entry) {
+          return res
+            .status(404)
+            .json({ error: { message: `Entry does not exist` } });
+        }
+        res.entry = entry;
+        next();
+      })
+      .catch(next);
+  })
+  .get((req, res, next) => {
+    res.json(serializeLogEntry(res.entry));
+  })
+  .put(jsonParser, (req, res, next) => {
+    const { user_id, date, rounds, round_length, cardio, notes } = req.body;
+    const entryToUpdate = {
+      user_id,
+      date,
+      rounds,
+      round_length,
+      cardio,
+      notes,
+    };
+    const { submissions, taps, sweeps } = req.body;
+    const movesToUpdate = { submissions, taps, sweeps };
 
-// favItemsRouter
-//   .route("/:itemid")
-//   .all((req, res, next) => {
-//     FavItemsService.getById(req.app.get("db"), req.params.itemid)
-//       .then((item) => {
-//         if (!item) {
-//           return res.status(404).json({
-//             error: { message: `Item doesn't exist` },
-//           });
-//         }
-//         res.item = item;
-//         next();
-//       })
-//       .catch(next);
-//   })
-//   .get((req, res, next) => {
-//     res.json(serializeItem(res.item));
-//   });
+    if (Object.values(entryToUpdate).filter(Boolean).length === 0) {
+      return res.status(400).json({
+        error: {
+          message: `Request must contain "date", "rounds", "round_length", "cardio", "notes", "submissions", "taps" or "sweeps".`,
+        },
+      });
+    }
+
+    logEntryService
+      .updateEntry(
+        req.app.get("db"),
+        req.params.logEntryId,
+        entryToUpdate,
+        movesToUpdate
+      )
+      .then((updatedEntry) => {
+        res.status(200).end();
+      })
+      // .then((updatedEntry) => {
+      //   console.log(updatedEntry, "111111111");
+      //   res.status(200).json(serializeLogEntry(updatedEntry[0]));
+      // })
+      .catch(next);
+  });
 
 module.exports = logEntryRouter;
 
-// soft delete moves table and pivot table
+//  getbyid should work similarly to getall, using similar joins and logic in the router.
