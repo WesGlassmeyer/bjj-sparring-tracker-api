@@ -65,7 +65,17 @@ const logEntryService = {
   },
 
   getById(knex, id) {
-    return knex.from("log_entry").select("*").where("id", id).first();
+    return knex
+      .select("*")
+      .from("log_entry")
+      .where("log_entry.id", id)
+      .join(
+        "log_moves_pivot",
+        "log_entry.id",
+        "=",
+        "log_moves_pivot.log_entry_id"
+      )
+      .join("moves", "moves.id", "=", "log_moves_pivot.move_id");
   },
 
   updateEntry(knex, logEntryId, entryToUpdate, movesToUpdate) {

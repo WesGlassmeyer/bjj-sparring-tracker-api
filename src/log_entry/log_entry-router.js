@@ -83,6 +83,11 @@ logEntryRouter
 logEntryRouter
   .route("/:logEntryId")
   .all((req, res, next) => {
+    if (isNaN(parseInt(req.params.logEntryId))) {
+      return res.status(404).json({
+        error: { message: `Invalid id` },
+      });
+    }
     logEntryService
       .getById(req.app.get("db"), req.params.logEntryId)
       .then((entry) => {
@@ -97,8 +102,36 @@ logEntryRouter
       .catch(next);
   })
   .get((req, res, next) => {
-    res.json(serializeLogEntry(res.entry));
+    logEntryService
+      .getById(req.app.get("db"), req.params.logEntryId)
+      .then((entries) => {
+        let formattedLogEntry = entries[0];
+        formattedLogEntry.submissions = [];
+        formattedLogEntry.taps = [];
+        formattedLogEntry.sweeps = [];
+        entries.forEach((entry) => {
+          if (entry.category === "subs") {
+            formattedLogEntry.submissions.push({
+              name: entry.name,
+              count: entry.count,
+            });
+          } else if (entry.category === "taps") {
+            formattedLogEntry.taps.push({
+              name: entry.name,
+              count: entry.count,
+            });
+          } else if (entry.category === "sweeps") {
+            formattedLogEntry.sweeps.push({
+              name: entry.name,
+              count: entry.count,
+            });
+          }
+        });
+        res.json(serializeLogEntry(formattedLogEntry));
+      })
+      .catch(next);
   })
+
   .put(jsonParser, (req, res, next) => {
     const { user_id, date, rounds, round_length, cardio, notes } = req.body;
     const entryToUpdate = {
@@ -138,5 +171,3 @@ logEntryRouter
   });
 
 module.exports = logEntryRouter;
-
-//  getbyid should work similarly to getall, using similar joins and logic in the router.
