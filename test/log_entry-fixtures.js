@@ -65,7 +65,7 @@ function makeMovesArray() {
 }
 
 function makeMovesPivotArray() {
-  [
+  return [
     {
       log_entry_id: 1,
       move_id: 1,
