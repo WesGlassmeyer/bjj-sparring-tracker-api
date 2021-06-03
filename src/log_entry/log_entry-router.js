@@ -11,7 +11,7 @@ const serializeLogEntry = (entry) => ({
   user_id: entry.user_id,
   date: entry.date,
   rounds: entry.rounds,
-  round_length: entry.rounds,
+  round_length: entry.round_length,
   cardio: entry.cardio,
   notes: xss(entry.notes),
   submissions: entry.submissions,
@@ -45,16 +45,19 @@ logEntryRouter
             newEntries[index].submissions.push({
               name: entry.name,
               count: entry.count,
+              category: entry.category,
             });
           } else if (entry.category === "taps") {
             newEntries[index].taps.push({
               name: entry.name,
               count: entry.count,
+              category: entry.category,
             });
           } else {
             newEntries[index].sweeps.push({
               name: entry.name,
               count: entry.count,
+              category: entry.category,
             });
           }
         });
@@ -114,16 +117,19 @@ logEntryRouter
             formattedLogEntry.submissions.push({
               name: entry.name,
               count: entry.count,
+              category: entry.category,
             });
           } else if (entry.category === "taps") {
             formattedLogEntry.taps.push({
               name: entry.name,
               count: entry.count,
+              category: entry.category,
             });
           } else if (entry.category === "sweeps") {
             formattedLogEntry.sweeps.push({
               name: entry.name,
               count: entry.count,
+              category: entry.category,
             });
           }
         });
@@ -163,10 +169,6 @@ logEntryRouter
       .then((updatedEntry) => {
         res.status(200).end();
       })
-      // .then((updatedEntry) => {
-      //   console.log(updatedEntry, "111111111");
-      //   res.status(200).json(serializeLogEntry(updatedEntry[0]));
-      // })
       .catch(next);
   });
 
