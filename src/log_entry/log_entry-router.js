@@ -78,7 +78,7 @@ logEntryRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${entry.id}`))
-          .json(serializeLogEntry(entry));
+          .end();
       })
       .catch(next);
   });
