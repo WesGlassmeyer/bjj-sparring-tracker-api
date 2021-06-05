@@ -2,19 +2,19 @@ function makeLogEntriesArray() {
   return [
     {
       user_id: 1,
-      date: "2021-04-20",
-      rounds: 5,
-      round_length: 5,
-      cardio: 1,
-      notes: "hey dare",
-    },
-    {
-      user_id: 1,
       date: "2021-05-21",
       rounds: 1,
       round_length: 1,
       cardio: 2,
       notes: "words",
+    },
+    {
+      user_id: 1,
+      date: "2021-04-20",
+      rounds: 5,
+      round_length: 5,
+      cardio: 1,
+      notes: "hey dare",
     },
   ];
 }
@@ -67,35 +67,35 @@ function makeMovesArray() {
 function makeMovesPivotArray() {
   return [
     {
-      log_entry_id: 1,
+      log_entry_id: 2,
       move_id: 1,
     },
     {
-      log_entry_id: 1,
+      log_entry_id: 2,
       move_id: 2,
     },
     {
-      log_entry_id: 1,
+      log_entry_id: 2,
       move_id: 3,
     },
     {
-      log_entry_id: 1,
+      log_entry_id: 2,
       move_id: 4,
     },
     {
-      log_entry_id: 2,
+      log_entry_id: 1,
       move_id: 5,
     },
     {
-      log_entry_id: 2,
+      log_entry_id: 1,
       move_id: 6,
     },
     {
-      log_entry_id: 2,
+      log_entry_id: 1,
       move_id: 7,
     },
     {
-      log_entry_id: 2,
+      log_entry_id: 1,
       move_id: 8,
     },
   ];
@@ -117,40 +117,7 @@ function makeUsersArray() {
 function makeExpectedLogEntriesArray() {
   return [
     {
-      user_id: 1,
-      date: "2021-04-20",
-      rounds: 5,
-      round_length: 5,
-      cardio: 1,
-      notes: "hey dare",
-      submissions: [
-        {
-          category: "subs",
-          count: 2,
-          name: "Triangle",
-        },
-      ],
-      taps: [
-        {
-          category: "taps",
-          count: 7,
-          name: "Kimura",
-        },
-      ],
-      sweeps: [
-        {
-          category: "sweeps",
-          count: 6,
-          name: "Flower Sweep",
-        },
-        {
-          category: "sweeps",
-          count: 30,
-          name: "Knee Lever",
-        },
-      ],
-    },
-    {
+      id: 1,
       user_id: 1,
       date: "2021-05-21",
       rounds: 1,
@@ -159,28 +126,55 @@ function makeExpectedLogEntriesArray() {
       notes: "words",
       submissions: [
         {
-          category: "subs",
           count: 4,
           name: "Rear Naked Choke",
         },
       ],
       taps: [
         {
-          category: "taps",
           count: 14,
           name: "Americana",
         },
       ],
       sweeps: [
         {
-          category: "sweeps",
+          count: 60,
+          name: "Pendulum Sweep",
+        },
+        {
           count: 12,
           name: "Hip Sweep",
         },
+      ],
+    },
+    {
+      id: 2,
+      user_id: 1,
+      date: "2021-04-20",
+      rounds: 5,
+      round_length: 5,
+      cardio: 1,
+      notes: "hey dare",
+      submissions: [
         {
-          category: "sweeps",
-          count: 60,
-          name: "Pendulum Sweep",
+          count: 2,
+          name: "Triangle",
+        },
+      ],
+      taps: [
+        {
+          count: 7,
+          name: "Kimura",
+        },
+      ],
+      sweeps: [
+        {
+          count: 6,
+          name: "Flower Sweep",
+        },
+        {
+          count: 30,
+          name: "Knee Lever",
         },
       ],
     },
