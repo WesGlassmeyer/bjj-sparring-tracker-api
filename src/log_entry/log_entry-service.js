@@ -9,7 +9,8 @@ const logEntryService = {
         "=",
         "log_moves_pivot.log_entry_id"
       )
-      .join("moves", "moves.id", "=", "log_moves_pivot.move_id");
+      .join("moves", "moves.id", "=", "log_moves_pivot.move_id")
+      .orderBy("date", "desc");
   },
 
   insertLogEntry(knex, newEntry, newMoves) {
