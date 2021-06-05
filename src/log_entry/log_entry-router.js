@@ -75,7 +75,7 @@ logEntryRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${entry.id}`))
-          .json(serializeLogEntry(entry));
+          .end();
       })
       .catch(next);
   });
@@ -163,10 +163,6 @@ logEntryRouter
       .then((updatedEntry) => {
         res.status(200).end();
       })
-      // .then((updatedEntry) => {
-      //   console.log(updatedEntry, "111111111");
-      //   res.status(200).json(serializeLogEntry(updatedEntry[0]));
-      // })
       .catch(next);
   });
 
