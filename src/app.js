@@ -5,7 +5,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const { CLIENT_URL } = require("./config");
-// const { API_BASE_URL } = require("./config");
 const logEntryRouter = require("./log_entry/log_entry-router");
 
 const app = express();
