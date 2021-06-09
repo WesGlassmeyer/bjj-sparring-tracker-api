@@ -126,22 +126,26 @@ function makeExpectedLogEntriesArray() {
       notes: "words",
       submissions: [
         {
+          category: "subs",
           count: 4,
           name: "Rear Naked Choke",
         },
       ],
       taps: [
         {
+          category: "taps",
           count: 14,
           name: "Americana",
         },
       ],
       sweeps: [
         {
+          category: "sweeps",
           count: 60,
           name: "Pendulum Sweep",
         },
         {
+          category: "sweeps",
           count: 12,
           name: "Hip Sweep",
         },
@@ -157,22 +161,26 @@ function makeExpectedLogEntriesArray() {
       notes: "hey dare",
       submissions: [
         {
+          category: "subs",
           count: 2,
           name: "Triangle",
         },
       ],
       taps: [
         {
+          category: "taps",
           count: 7,
           name: "Kimura",
         },
       ],
       sweeps: [
         {
+          category: "sweeps",
           count: 6,
           name: "Flower Sweep",
         },
         {
+          category: "sweeps",
           count: 30,
           name: "Knee Lever",
         },
