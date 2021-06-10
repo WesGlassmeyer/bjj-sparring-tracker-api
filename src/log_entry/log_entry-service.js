@@ -1,20 +1,16 @@
 const logEntryService = {
   getAllLogEntries(knex) {
-    try {
-      return knex
-        .select("*")
-        .from("log_entry")
-        .join(
-          "log_moves_pivot",
-          "log_entry.id",
-          "=",
-          "log_moves_pivot.log_entry_id"
-        )
-        .join("moves", "moves.id", "=", "log_moves_pivot.move_id")
-        .orderBy("date", "desc");
-    } catch (e) {
-      console.log(e, "eeeeeeeeeeeeeee");
-    }
+    return knex
+      .select("*")
+      .from("log_entry")
+      .join(
+        "log_moves_pivot",
+        "log_entry.id",
+        "=",
+        "log_moves_pivot.log_entry_id"
+      )
+      .join("moves", "moves.id", "=", "log_moves_pivot.move_id")
+      .orderBy("date", "desc");
   },
 
   insertLogEntry(knex, newEntry, newMoves) {
