@@ -4,6 +4,6 @@ module.exports = {
   CLIENT_URL: process.env.CLIENT_ORIGIN || "http://localhost:3000",
 
   API_BASE_URL:
-    process.env.REACT_APP_API_BASE_URL ||
+    process.env.DATABASE_URL ||
     "postgresql://wes@localhost/bjj-sparring-tracker",
 };
