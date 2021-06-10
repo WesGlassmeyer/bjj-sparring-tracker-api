@@ -65,17 +65,11 @@ Deployed via Heroku
 - Path `https://rocky-mountain-25010.herokuapp.com/log_entry`
 - Required Request Headers:
 
-````
-
-{
-Content-Type: 'application/json',
-}
-
-```
+`{Content-Type: 'application/json'}`
 
 - Response Body will be an array of JSON Objects:
 
-
+```
 [{
       id: 1,
       user_id: 1,
@@ -106,7 +100,6 @@ Content-Type: 'application/json',
         }
       ]
     }]
-
 ```
 
 ### GET Log Entry By ID
@@ -114,17 +107,11 @@ Content-Type: 'application/json',
 - Request Type: `GET`
 - Path `https://rocky-mountain-25010.herokuapp.com/log_entry/{EntryIdGoesHere}`
 - Required Request Headers:
-````
-
-{
-Content-Type: 'application/json',
-}
-
-```
+  `{Content-Type: 'application/json'}`
 
 - Response Body will be a JSON Object matching the Id number:
 
-
+```
 {
       id: 1,
       user_id: 1,
