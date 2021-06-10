@@ -22,12 +22,14 @@ const serializeLogEntry = (entry) => ({
 logEntryRouter
   .route("/")
   .get((req, res, next) => {
+    console.log("are you working?");
     const knexInstance = req.app.get("db");
+    console.log("are you working?", "1111");
     logEntryService
       .getAllLogEntries(knexInstance)
       .then((entries) => {
         const newEntries = [];
-
+        console.log("are you working?", "2222");
         entries.forEach((entry) => {
           let index = newEntries.findIndex((id) => {
             return id.log_entry_id === entry.log_entry_id;
@@ -61,6 +63,7 @@ logEntryRouter
             });
           }
         });
+        console.log("are you working?", "3333");
         res.json(newEntries.map(serializeLogEntry));
       })
       .catch(next);
