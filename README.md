@@ -14,7 +14,7 @@ Keeping a log of what you did successfully during each jiu jitsu sparring sessio
 
 ## Quick App Demo
 
-https://user-images.githubusercontent.com/71471439/121461529-48cd5800-c96c-11eb-9029-0c170e5254a8.mp4
+![](gif/tracker-demo.gif)
 
 ## Technology
 
