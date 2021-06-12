@@ -5,6 +5,8 @@ module.exports = {
   driver: "pg",
   //   ssl: true,
   connectionString:
-    process.env.NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
+    process.env.NODE_ENV === "test"
+      ? process.env.TEST_DATABASE_URL
+      : process.env.DATABASE_URL,
   // "postgresql://wes@localhost/bjj-sparring-tracker",
 };
