@@ -12,9 +12,9 @@ describe("Log Entry Endpoints", function () {
     db = knex({
       client: "pg",
 
-      // connection: process.env.TEST_DATABASE_URL,
+      connection: process.env.TEST_DATABASE_URL,
 
-      connection: "postgresql://wes@localhost/test-bjj-sparring-tracker",
+      // connection: "postgresql://wes@localhost/test-bjj-sparring-tracker",
     });
     app.set("db", db);
   });
