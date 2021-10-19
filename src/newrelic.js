@@ -1,4 +1,4 @@
-const { LICENSE_KEY } = require("src/config");
+const { NEW_RELIC_LICENSE_KEY } = require("src/config");
 const { NEW_RELIC_APP_NAME } = require("src/config");
 ("use strict");
 /**
@@ -15,7 +15,7 @@ exports.config = {
   /**
    * Your New Relic license key.
    */
-  license_key: LICENSE_KEY,
+  license_key: NEW_RELIC_LICENSE_KEY,
   /**
    * This setting controls distributed tracing.
    * Distributed tracing lets you see the path that a request takes through your
